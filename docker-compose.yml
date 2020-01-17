@@ -1,0 +1,47 @@
+# Version of docker-compose
+version: "3.7"
+
+# Services running
+services:
+  # MySQL Database
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  # WordPress
+  web:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - ./theme/:/var/www/html/wp-content/themes/custom-theme
+      - ./wordpress/plugins:/var/www/html/wp-content/plugins
+      - ./wordpress/uploads:/var/www/html/wp-content/uploads
+
+  # PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - 8181:80
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: somewordpress
+volumes:
+  db_data: {}

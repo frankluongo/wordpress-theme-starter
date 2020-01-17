@@ -1,0 +1,11 @@
+{
+  "name": "wordpress-theme-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "description": "A Starter Wordpress Theme Repo",
+  "author": "@frankluongo",
+  "scripts": {
+    "dev": "docker-compose up -d && cd theme && yarn start"
+  }
+}
